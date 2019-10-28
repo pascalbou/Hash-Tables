@@ -104,14 +104,18 @@ class HashTable:
 
         hashed_index = self._hash_mod(key)
         p = self.storage[hashed_index]
+        # print(p)
+        # print(p.key)
+        # print(p.value)
+        # print(p.next)
         
-        if not p.key:
-            return None
-        else:
-            # search through the linked list while key is not found
-            while p.key != key:
-                p = p.next
-            value = p.value
+        # if not p.key:
+        #     return None
+        # else:
+        # search through the linked list while key is not found
+        while p.key != key:
+            p = p.next
+        value = p.value
 
         return value
 
@@ -119,10 +123,19 @@ class HashTable:
         '''
         Doubles the capacity of the hash table and
         rehash all key/value pairs.
-
         Fill this in.
         '''
-        pass
+        print(self.storage)
+        # set capacity to capacity times 2
+        self.capacity *= 2
+        # create a new storage
+        new_storage = [None] * self.capacity
+        # copy over the contents of storage to the new storage
+        for i in range(len(self.storage)):
+            new_storage[i] = self.storage[i]
+        # set the storage to be the new storage
+        self.storage = new_storage
+        print(self.storage)
 
 
 if __name__ == "__main__":
