@@ -26,19 +26,30 @@ class HashTable:
         You may replace the Python hash with DJB2 as a stretch goal.
         '''
 
-        hashed_key = 0
-        for letter in key:
-            hashed_key += ord(letter)
+        # hashed_key = 0
+        # for letter in key:
+        #     hashed_key += ord(letter)
 
-        return hashed_key
+        # return hashed_key
+
+        hashed_key = 5381
+        # 33 is (2 ** 5 + 1)
+        for letter in key:
+            hashed_key = hashed_key * 33 + ord(letter)
+
+        return hashed_key        
 
     def _hash_djb2(self, key):
         '''
         Hash an arbitrary key using DJB2 hash
-
         OPTIONAL STRETCH: Research and implement DJB2
         '''
-        pass
+        hashed_key = 5381
+        # 33 is (2 ** 5 + 1)
+        for letter in key:
+            hashed_key = hashed_key * 33 + ord(letter)
+
+        return hashed_key
 
     def _hash_mod(self, key):
         '''
