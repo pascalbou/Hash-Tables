@@ -53,14 +53,24 @@ class HashTable:
         Hash collisions should be handled with Linked List Chaining.
         Fill this in.
         '''
-        hash_index = self._hash_mod(key)
+        hashed_index = self._hash_mod(key)
 
-        if not self.storage[hash_index]:
-            self.storage[hash_index] = LinkedPair(key, value)
+        # if there is nothing at this index, add the value
+        if not self.storage[hashed_index]:
+            self.storage[hashed_index] = LinkedPair(key, value)
         else:
-            p = self.storage[hash_index]
-            while p.next:
-                p = p.next
+            p = self.storage[hashed_index]
+            # check the first key is it already exists
+            if p.next == None:
+                if p.key == key:
+                    p.value = value
+            # else check the key within the elements on the linked list
+            else:
+                while p.next:
+                    if p.key == key:
+                        p.value = value
+                    p = p.next
+            # add the value at the end of the linked list
             p.next = LinkedPair(key, value)
 
     def remove(self, key):
@@ -78,15 +88,17 @@ class HashTable:
         Fill this in.
         '''
 
-        hash_index = self._hash_mod(key)
-        p = self.storage[hash_index]
-        while p.key != key:
-            p = p.next
-        value = p.value
-        # print(value)
-
-        if not value:
+        hashed_index = self._hash_mod(key)
+        p = self.storage[hashed_index]
+        
+        if not p.key:
             print(f'No value was found at {key}')
+            return
+        else:
+            # search through the linked list while key is not found
+            while p.key != key:
+                p = p.next
+            value = p.value
 
         return value
 
