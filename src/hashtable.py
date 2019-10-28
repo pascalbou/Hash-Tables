@@ -79,7 +79,21 @@ class HashTable:
         Print a warning if the key is not found.
         Fill this in.
         '''
-        pass
+
+        hashed_index = self._hash_mod(key)
+        p = self.storage[hashed_index]
+        value = ''
+
+        if not p.key:
+            print(f'This {key} does not exist')
+            return None
+        else:
+            while p.key != key:
+                p = p.next
+            value = p.value
+            p.value = None           
+
+        return value
 
     def retrieve(self, key):
         '''
@@ -92,8 +106,7 @@ class HashTable:
         p = self.storage[hashed_index]
         
         if not p.key:
-            print(f'No value was found at {key}')
-            return
+            return None
         else:
             # search through the linked list while key is not found
             while p.key != key:
