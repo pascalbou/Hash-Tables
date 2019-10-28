@@ -101,21 +101,16 @@ class HashTable:
         Returns None if the key is not found.
         Fill this in.
         '''
-
         hashed_index = self._hash_mod(key)
         p = self.storage[hashed_index]
-        # print(p)
-        # print(p.key)
-        # print(p.value)
-        # print(p.next)
         
-        # if not p.key:
-        #     return None
-        # else:
-        # search through the linked list while key is not found
-        while p.key != key:
-            p = p.next
-        value = p.value
+        if not p.key:
+            return None
+        else:
+            # search through the linked list while key is not found
+            while p.key != key:
+                p = p.next
+            value = p.value
 
         return value
 
@@ -125,17 +120,23 @@ class HashTable:
         rehash all key/value pairs.
         Fill this in.
         '''
-        print(self.storage)
-        # set capacity to capacity times 2
         self.capacity *= 2
-        # create a new storage
-        new_storage = [None] * self.capacity
-        # copy over the contents of storage to the new storage
+
+        # saves old storage
+        temp_storage = [None] * len(self.storage)
         for i in range(len(self.storage)):
-            new_storage[i] = self.storage[i]
-        # set the storage to be the new storage
-        self.storage = new_storage
-        print(self.storage)
+            temp_storage[i] = self.storage[i]
+        
+        # erase storage and double its size
+        self.storage = [None] * self.capacity
+
+        # loop through old storage including all values in linked list and re-insert in new storage
+        for i in range(len(temp_storage)):
+            self.insert(temp_storage[i].key, temp_storage[i].value)
+            p = temp_storage[i].next
+            while p:
+                self.insert(temp_storage[i].next.key, temp_storage[i].next.value)
+                p = p.next
 
 
 if __name__ == "__main__":
