@@ -20,6 +20,7 @@ class HashTable:
         self.capacity = capacity  # Number of buckets in the hash table
         self.storage = [None] * capacity
         self.count = 0
+        self.resized = False
 
     def _hash(self, key):
         '''
@@ -120,8 +121,8 @@ class HashTable:
             p.value = None
 
         self.count -= 1
-        # if self.count / len(self.storage) < 0.2:
-        #     self.shrink()
+        if self.resized and self.count / len(self.storage) < 0.2 and self.count > 8:
+            self.shrink()
 
         return value
 
@@ -160,6 +161,7 @@ class HashTable:
         # erase storage and double its size
         self.storage = [None] * self.capacity
         self.count = 0
+        self.resized = True
 
         # loop through old storage including all values in linked list and re-insert in new storage
         for i in range(len(temp_storage)):
@@ -171,7 +173,25 @@ class HashTable:
                     p = p.next
 
     def shrink(self):
-        pass
+        self.capacity /= 2
+
+        # saves old storage
+        temp_storage = [None] * len(self.storage)
+        for i in range(len(self.storage)):
+            temp_storage[i] = self.storage[i]
+        
+        # erase storage and double its size
+        self.storage = [None] * self.capacity
+        self.count = 0
+
+        # loop through old storage including all values in linked list and re-insert in new storage
+        for i in range(len(temp_storage)):
+            if temp_storage[i]:
+                self.insert(temp_storage[i].key, temp_storage[i].value)  
+                p = temp_storage[i].next
+                while p:
+                    self.insert(temp_storage[i].next.key, temp_storage[i].next.value)
+                    p = p.next
 
 if __name__ == "__main__":
     ht = HashTable(2)
