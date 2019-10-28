@@ -86,18 +86,9 @@ class HashTable:
             p.next = LinkedPair(key, value)
         
         self.count += 1
-        # print(self.count)
 
         if self.count / len(self.storage) > 0.7:
-            # print(self.count)
-            # print(self.count / len(self.storage))
-            # print(len(self.storage))
-            # print(self.storage)
             self.resize()
-            # print(self.count)
-            # print(self.count / len(self.storage))
-            # print(len(self.storage))
-            # print(self.storage)
 
 
     def remove(self, key):
@@ -121,8 +112,16 @@ class HashTable:
             p.value = None
 
         self.count -= 1
-        if self.resized and self.count / len(self.storage) < 0.2 and self.count > 8:
+        # print(self.count)
+        # print(len(self.storage))
+        # print(self.count / len(self.storage))
+        # print(self.storage)
+        if self.resized and self.count / len(self.storage) < 0.2 and len(self.storage) > 8:
             self.shrink()
+            # print(self.count)
+            # print(self.count / len(self.storage))
+            # print(len(self.storage))
+            # print(self.storage)
 
         return value
 
@@ -173,7 +172,7 @@ class HashTable:
                     p = p.next
 
     def shrink(self):
-        self.capacity /= 2
+        self.capacity = int(self.capacity/2)
 
         # saves old storage
         temp_storage = [None] * len(self.storage)
@@ -182,16 +181,18 @@ class HashTable:
         
         # erase storage and double its size
         self.storage = [None] * self.capacity
+        print(len(self.storage))
+
+        print(self.storage)
         self.count = 0
 
         # loop through old storage including all values in linked list and re-insert in new storage
         for i in range(len(temp_storage)):
             if temp_storage[i]:
                 self.insert(temp_storage[i].key, temp_storage[i].value)  
-                p = temp_storage[i].next
-                while p:
-                    self.insert(temp_storage[i].next.key, temp_storage[i].next.value)
-                    p = p.next
+
+        print(len(self.storage))
+        print(self.storage)               
 
 if __name__ == "__main__":
     ht = HashTable(2)
