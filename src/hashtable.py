@@ -99,17 +99,20 @@ class HashTable:
         '''
 
         hashed_index = self._hash_mod(key)
-        p = self.storage[hashed_index]
         value = ''
+        previous = None
+        p = self.storage[hashed_index]
 
-        if not p.key:
+        if not self.storage[hashed_index].key:
             print(f'This {key} does not exist')
             return None
         else:
             while p.key != key:
+                previous = p
                 p = p.next
-            value = p.value
-            p.value = None
+            previous.next = p.next
+            # value = p.value
+            # p.value = None
 
         self.count -= 1
         # print(self.count)
