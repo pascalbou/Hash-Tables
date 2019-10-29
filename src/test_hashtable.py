@@ -247,12 +247,6 @@ class TestHashTable(unittest.TestCase):
         self.assertTrue(return_value == "val-1")
         return_value = ht.retrieve("key-2")
         self.assertTrue(return_value == "val-2")
-        return_value = ht.retrieve("key-3")
-        self.assertTrue(return_value == "val-3")
-        return_value = ht.retrieve("key-4")
-        self.assertTrue(return_value == "val-4")
-        return_value = ht.retrieve("key-5")
-        self.assertTrue(return_value == "val-5")
 
 
 if __name__ == '__main__':

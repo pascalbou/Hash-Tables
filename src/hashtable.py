@@ -109,6 +109,7 @@ class HashTable:
         elif self.storage[hashed_index].value == value:
             # remove the heads value
             self.storage[hashed_index] = self.storage[hashed_index].next
+            self.count -= 1
         # otherwise
         else:
             # create a parent and set it to the head
@@ -121,12 +122,15 @@ class HashTable:
                 if current_node.value == value:
                     # remove the value
                     parent.next = current_node.next
-                    # return
+                    self.count -= 1
                     return
                 # increment current node
                 current_node = current_node.next
             # print value not found
             print("Error: Value not found")
+
+        if self.resized and self.count / len(self.storage) < 0.2 and len(self.storage) > 8:
+            self.shrink()
 
     def retrieve(self, key):
         '''
@@ -181,20 +185,16 @@ class HashTable:
         for i in range(len(self.storage)):
             temp_storage[i] = self.storage[i]
         
-        # erase storage and double its size
+        # erase storage, reset count and resized bool
         self.storage = [None] * self.capacity
-        print(len(self.storage))
-
-        print(self.storage)
         self.count = 0
+        self.resized = False
 
         # loop through old storage including all values in linked list and re-insert in new storage
         for i in range(len(temp_storage)):
             if temp_storage[i]:
                 self.insert(temp_storage[i].key, temp_storage[i].value)  
-
-        print(len(self.storage))
-        print(self.storage)               
+        
 
 if __name__ == "__main__":
     ht = HashTable(2)
