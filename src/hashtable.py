@@ -99,34 +99,34 @@ class HashTable:
         '''
 
         hashed_index = self._hash_mod(key)
-        value = ''
-        previous = None
-        p = self.storage[hashed_index]
+        value = self.retrieve(key)
 
-        if not self.storage[hashed_index].key:
-            print(f'This {key} does not exist')
-            return None
+        # if there is no head
+        if not self.storage[hashed_index]:
+            # print an error
+            print("Error: value not found")
+        # otherwise if the heads value is equal to the value
+        elif self.storage[hashed_index].value == value:
+            # remove the heads value
+            self.storage[hashed_index] = self.storage[hashed_index].next
+        # otherwise
         else:
-            while p.key != key:
-                previous = p
-                p = p.next
-            previous.next = p.next
-            # value = p.value
-            # p.value = None
-
-        self.count -= 1
-        # print(self.count)
-        # print(len(self.storage))
-        # print(self.count / len(self.storage))
-        # print(self.storage)
-        if self.resized and self.count / len(self.storage) < 0.2 and len(self.storage) > 8:
-            self.shrink()
-            # print(self.count)
-            # print(self.count / len(self.storage))
-            # print(len(self.storage))
-            # print(self.storage)
-
-        return value
+            # create a parent and set it to the head
+            parent = self.storage[hashed_index]
+            # set a ref to current node heads next
+            current_node = self.storage[hashed_index].next
+            # loop while there is a current node
+            while current_node:
+                # check if the current nodes value is equal to the value
+                if current_node.value == value:
+                    # remove the value
+                    parent.next = current_node.next
+                    # return
+                    return
+                # increment current node
+                current_node = current_node.next
+            # print value not found
+            print("Error: Value not found")
 
     def retrieve(self, key):
         '''
@@ -135,17 +135,16 @@ class HashTable:
         Fill this in.
         '''
         hashed_index = self._hash_mod(key)
-        p = self.storage[hashed_index]
         
-        if not p.key:
+        if not self.storage[hashed_index]:
             return None
         else:
             # search through the linked list while key is not found
-            while p.key != key:
-                p = p.next
-            value = p.value
-
-        return value
+            current_node = self.storage[hashed_index]
+            while current_node:
+                if current_node.key == key:
+                    return current_node.value
+                current_node = current_node.next
 
     def resize(self):
         '''
